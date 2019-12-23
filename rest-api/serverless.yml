@@ -1,0 +1,29 @@
+service: rest-api
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: ${env:AWS_REGION}
+  memorySize: 128
+
+functions:
+  getExport:
+    handler: handler.getExport
+    events:
+      - http:
+          path: export/{jobId}
+          method: get
+  createExport:
+    handler: handler.createExport
+    events:
+      - http:
+          path: export
+          method: post
+
+custom:
+  dotenv:
+    path: ../.env
+
+plugins:
+  - serverless-offline
+  - serverless-dotenv-plugin

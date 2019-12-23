@@ -1,0 +1,21 @@
+{
+  "name": "rest-api",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "serverless offline start --skipCacheInvalidation",
+    "invoke-create": "curl -i -X POST http://localhost:3000/export -d '{ \"startDate\": \"2018-11-30\", \"endDate\": \"2018-12-01\" }'"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "serverless": "^1.60.3",
+    "serverless-dotenv-plugin": "^2.1.1",
+    "serverless-offline": "^5.12.1"
+  },
+  "dependencies": {
+    "amqplib": "^0.5.5",
+    "aws-sdk": "^2.596.0",
+    "mongodb": "^3.4.1"
+  }
+}
