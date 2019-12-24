@@ -1,3 +1,4 @@
+require('dotenv').config({ path: '../.env' });
 const cluster = require('cluster');
 const worker = require('./src/worker');
 
@@ -11,7 +12,7 @@ function masterProcess() {
     console.log(`Master ${process.pid} is running`);
 
     const numCPUs = require('os').cpus().length;
-    for (let i = 0; i < 1; i++) {
+    for (let i = 0; i < numCPUs; i++) {
         console.log(`Forking process number ${i}...`);
         cluster.fork();
     }

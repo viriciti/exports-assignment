@@ -1,8 +1,8 @@
 const amqp = require('amqplib');
 
 async function listenToQueue (task) {
-    const queue = process.env.QUEUE_NAME || 'test';
-    const connection = await amqp.connect(process.env.QUEUE_URI || 'amqp://localhost');
+    const queue = process.env.QUEUE_NAME
+    const connection = await amqp.connect(process.env.QUEUE_URI);
     const channel = await connection.createChannel();
 
     await channel.assertQueue(queue, { durable: false });
