@@ -30,7 +30,7 @@ module.exports.createExport = async (event, context) => {
     return {
         statusCode: 202,
         headers: {
-            Location: aJobId
+            Location: `http://localhost:3000/export/${aJobId}`
         }
     };
 };

@@ -14,7 +14,7 @@ async function getExport (id) {
     return aJob;
 }
 
-async function createExport ({ startDate, endDate}) {
+async function createExport ({ startDate, endDate }) {
     const exportDb = await db.getDb();
     const aJobId = await job.createJob(exportDb, startDate, endDate);
 
