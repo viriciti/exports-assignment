@@ -1,6 +1,8 @@
 require('dotenv').config({ path: '../.env' });
 const cluster = require('cluster');
+
 const worker = require('./src/worker');
+const logger = require('./src/logger');
 
 if (cluster.isMaster) {
     masterProcess();
@@ -8,21 +10,20 @@ if (cluster.isMaster) {
     childProcess();
 }
 
-function masterProcess() {
-    console.log(`Master ${process.pid} is running`);
+logger.info('Process started');
 
+function masterProcess() {
     const numCPUs = require('os').cpus().length;
     for (let i = 0; i < numCPUs; i++) {
-        console.log(`Forking process number ${i}...`);
+        logger.info(`Forking process number ${i}...`);
         cluster.fork();
     }
 
     cluster.on('exit', function(worker, code, signal) {
-        console.log('Worker ' + worker.process.pid + ' died with code: ' + code + ', and signal: ' + signal);
+        logger.warn(`Worker ${worker.process.pid} died with code: ${code}, and signal: ${signal}`);
     });
 }
 
 function childProcess() {
-    console.log(`Worker ${process.pid} started`);
     worker.run();
 }
