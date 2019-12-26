@@ -10,11 +10,16 @@ const s3 = new AWS.S3({
 
 const bucket = process.env.AWS_S3_BUCKET;
 
-function uploadFile (fileName, buffer) {
-    return s3.putObject({
+const CHUNK_SIZE = 10 * 1024 * 1024;
+const CONCURRENT = 1;
+
+function uploadFile (fileName, stream) {
+    return s3.upload({
         Bucket: bucket,
         Key: fileName,
-        Body: buffer
+        Body: stream,
+        partSize: CHUNK_SIZE,
+        queueSize: CONCURRENT
     }).promise();
 }
 

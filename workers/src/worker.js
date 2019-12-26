@@ -1,36 +1,47 @@
-const zip = require("node-native-zip");
+const compressing = require('compressing');
+const zlib = require('zlib');
 
 const db = require('./db');
 const queue = require('./queue');
 const fileHosting = require('./fileHosting');
 const unwind = require('./unwind');
 const job = require('./job');
-
+const logger = require('./logger');
 
 // const start = new Date("2018-11-30").valueOf();
 // const end = new Date("2018-12-01").valueOf();
 
 async function task ({ vehicleDatabases, exportsDatabase }, id) {
-    console.log(`Gonna start task for ${id}`);
+    logger.info(`Gonna start task for ${id}`);
     const { value: newJob } = await job.startJob(exportsDatabase, id);
 
-    console.log(`Retrieving information from ${newJob.startDate} (${newJob.startDate.valueOf()}) to ${newJob.endDate} (${newJob.endDate.valueOf()})`);
-    const promises = vehicleDatabases.map(db => unwind(db, newJob.startDate.valueOf(), newJob.endDate.valueOf()));
-    const contents = await Promise.all(promises);
-    console.log('Got all information from DB');
+    logger.debug(`Retrieving information from ${newJob.startDate} to ${newJob.endDate}}`, {
+        startDate: newJob.startDate.valueOf(),
+        endDate: newJob.endDate.valueOf()
+    });
+    const databasesOutput = vehicleDatabases.map(db => unwind(db, newJob.startDate.valueOf(), newJob.endDate.valueOf()));
+    logger.debug('Got all streams');
 
-    const archive = new zip();
-    for (let i = 0; i < contents.length; i++) {
-        archive.add(`${vehicleDatabases[i].databaseName}.csv`, Buffer.from(contents[i]));
-    }
-    const zipBuffer = archive.toBuffer();
-    console.log('Zipped files');
+    const tar = new compressing.tar.Stream();
+    databasesOutput.forEach((databaseOutput, index) => {
+        databaseOutput.forEach(({ collectionName, stream }) => {
+            const fileName = `${collectionName}.csv`;
+            tar.addEntry(stream,
+            { suppressSizeWarning: true, relativePath: `${vehicleDatabases[index].databaseName}/${fileName}` }
+            );
+        });
+    });
+    logger.debug('Zipped files');
 
-    const zipFileName = `export-${newJob._id}.zip`;
-    await fileHosting.uploadFile(zipFileName, zipBuffer);
-    console.log('Uploaded Zip file');
+    const archive = tar.pipe(zlib.createGzip());
+    const archiveFileName = `export-${newJob._id}.tar.gz`;
+    await fileHosting.uploadFile(archiveFileName, archive);
+    logger.debug('Uploaded Zip file');
 
-    await job.finishJob(exportsDatabase, newJob._id, zipFileName);
+    archive.on('end', () => logger.debug('end archive'));
+
+    await job.finishJob(exportsDatabase, newJob._id, archiveFileName);
+    logger.info(`Finished task ${id}`)
 }
 
 async function run () {
