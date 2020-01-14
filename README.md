@@ -80,7 +80,7 @@ The main challenge is creating an export system that will not overflow the datab
   ```
   _(For clearity purposes this example in not a CSV format)_
 
-* To be clear on the data extraction part: the supplied vehicle data is too much for a process handle in-memory and do the sorting on time, so don not go that way. You will have to solve this in an other manner (e.g. streams are made for this).
+* To be clear on the data extraction part: the supplied vehicle data is too much for a process handle in-memory and do the sorting on time, so don't go that way. You will have to solve this in an other manner (e.g. streams are made for this).
 
 * The exports should be throttled. Basically, the enormous loads per export request should be controlled, and should not overflow the framework you will create.
 * (Bonus) Create a simple UI where the exports can be composed, and the export result can be downloaded.
