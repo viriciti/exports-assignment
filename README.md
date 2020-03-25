@@ -80,7 +80,7 @@ The main challenge is creating an export system that will not overflow the datab
   ```
   _(For clearity purposes this example in not a CSV format)_
 
-* So the main problem with the databse structure is that it all time-series vehicle parameter data is stored in separate MongoDB collections (on time and value), and no alignment on time exsists between these collections. For the CSV export, all parameter data _needs to be aligned_. You will have to find a solution for this. The supplied vehicle data is just too much for a single process to handle (and transform) in-memory, **so don't go that way**. You will have to solve this in a streaming way (see [Node.js streams](https://nodejs.org/api/stream.html)) or find another staged solution. 
+* So the main problem with the databse structure is that it all time-series vehicle parameter data is stored in separate MongoDB collections (on time and value), and no alignment on time exsists between these collections. For the CSV export, all parameter data _needs to be aligned_. You will have to find a solution for this. The supplied vehicle data is just too much for a single process to handle (and transform) in-memory, **so don't go that way**. You will have to solve this in a streaming way (see [Node.js streams](https://nodejs.org/api/stream.html)) or find some sort of staged solution. 
 
 * The exports should be throttled. Basically, the enormous loads per export request should be controlled, and should not overflow the framework you will create.
 * (Bonus) Create a simple UI where the exports can be composed, and the export result can be downloaded.
