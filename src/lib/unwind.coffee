@@ -58,25 +58,28 @@ This function returns a consumable stream of datapoints from a selected MongoDB 
 @param start,    unix timestamp,     The start time in milliscends
 @param end,      unix timestamp,     The end time in milliseconds
 
-Example usage:
+Example usage (working code):
 
 ```
-moment          = require "moment"
 { MongoClient } = require "mongodb"
 
-unwind = require "./unwind"
+unwind = require "./src/lib/unwind"
 
-start = +(moment "2019-01-01").utc()
-end   = +(moment "2019-01-02").utc()
+start = +new Date "2018-01-03T00:00:00.000Z"
+end   = +new Date "2018-01-04T00:00:00.000Z"
 
-client = await MongoClient.connect "mongodb://localhost:27017/vehicle_001"
+do ->
+  client = await MongoClient.connect "mongodb://localhost:27017/vehicle_001", { useUnifiedTopology: true }
 
-speed = client
-  .db "vehicle_001"
-  .collection "speed"
+  speed = client
+    .db "vehicle_001"
+    .collection "speed"
 
-source = unwind speed, start, end
-source.on "data", (point) -> console.log "Speed data point!", point
+  doc = await speed.findOne {}, {sort: _id: 1}
+
+  source = unwind speed, start, end
+  source.on "data", (point) -> console.log "Speed data point!", point
+  source.on "end",          -> console.log "Source is fully drained!"
 ```
 ###
 module.exports = (collection, start, end)->
