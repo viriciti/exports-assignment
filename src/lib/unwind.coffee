@@ -58,7 +58,7 @@ This function returns a consumable stream of datapoints from a selected MongoDB 
 @param start,    unix timestamp,     The start time in milliscends
 @param end,      unix timestamp,     The end time in milliseconds
 
-Example:
+Example usage:
 
 ```
 moment          = require "moment"
