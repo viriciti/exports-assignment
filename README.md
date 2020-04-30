@@ -4,7 +4,7 @@
 ![](https://imgs.xkcd.com/comics/data_pipeline.png)
 
 ## Introduction
-This repository holds the ViriCiti Exports assignment, where you will create a scalable export tool. The export functionality that you will create for us addresses a MongoDB database and extracts vehicle parameters and combines this into a zipped CSV format. Together with this assignment, you should have been given access to a vehicle data set to work with, with which you can provision your local database.
+This repository holds the ViriCiti Exports assignment, where you will create a scalable export tool. The export functionality that you will create for us addresses a MongoDB database and extracts vehicle parameters and combines this into a zipped CSV format. Together with this assignment, you should have been given access to a vehicle data set to work with, with which you can provision your local database using `mongorestore`.
 
 ## Database model structure
 First of all, every vehicle will have its own database on the MongoDB server.
