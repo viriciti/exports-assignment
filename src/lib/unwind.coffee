@@ -75,8 +75,6 @@ do ->
     .db "vehicle_001"
     .collection "speed"
 
-  doc = await speed.findOne {}, {sort: _id: 1}
-
   source = unwind speed, start, end
   source.on "data", (point) -> console.log "Speed data point!", point
   source.on "end",          -> console.log "Source is fully drained!"
