@@ -36,7 +36,7 @@ Example of database document structure
 ###
 
 ###
-This function will flatten the document from the parameter collection into a timeseries array. It's weird!
+This function will flatten a document into a timeseries array. It's weird!
 
 @params document, Object, An object document from the parameter collection
 ###
@@ -51,10 +51,33 @@ unwindDocument = (document) ->
 	_.flatten unwindLevel document, +document._id, 0
 
 ###
+This function returns a consumable stream of datapoints from a selected MongoDB collection holding vehicle paramter data.
+
 @param database, MongoDB Collection, The parameter collection to query
 @param label,    String,             The name of the paramter collection to query
 @param start,    unix timestamp,     The start time in milliscends
 @param end,      unix timestamp,     The end time in milliseconds
+
+Example:
+
+```
+moment          = require "moment"
+{ MongoClient } = require "mongodb"
+
+unwind = require "./unwind"
+
+start = +(moment "2019-01-01").utc()
+end   = +(moment "2019-01-02").utc()
+
+client = await MongoClient.connect "mongodb://localhost:27017/vehicle_001"
+
+speed = client
+  .db "vehicle_001"
+  .collection "speed"
+
+source = unwind speed, start, end
+source.on "data", (point) -> console.log "Speed data point!", point
+```
 ###
 module.exports = (collection, start, end)->
 	query =
