@@ -4,7 +4,7 @@
 ![](https://imgs.xkcd.com/comics/data_pipeline.png)
 
 ## Introduction
-This repository holds the ViriCiti Exports assignment, where you will create a salable export tool. The export functionality that you will create for us addresses a MongoDB database and extracts vehicle parameters and combines this into a zipped CSV format. Together with this assignment, you should have been given access to a vehicle data set to work with, with which you can provision your local database.
+This repository holds the ViriCiti Exports assignment, where you will create a scalable export tool. The export functionality that you will create for us addresses a MongoDB database and extracts vehicle parameters and combines this into a zipped CSV format. Together with this assignment, you should have been given access to a vehicle data set to work with, with which you can provision your local database.
 
 ## Database model structure
 First of all, every vehicle will have its own database on the MongoDB server.
@@ -83,6 +83,7 @@ The main challenge is creating an export system that will not overflow the datab
 * So the main problem with the databse structure is that it all time-series vehicle parameter data is stored in separate MongoDB collections (on time and value), and no alignment on time exsists between these collections. For the CSV export, all parameter data _needs to be aligned_. You will have to find a solution for this. The supplied vehicle data is just too much for a single process to handle (and transform) in-memory, **so don't go that way**. You will have to solve this in a streaming way (see [Node.js streams](https://nodejs.org/api/stream.html)) or find some sort of staged solution. 
 
 * The exports should be throttled. Basically, the enormous loads per export request should be controlled, and should not overflow the framework you will create.
+
 * (Bonus) Create a simple UI where the exports can be composed, and the export result can be downloaded.
 
 The most important task for this assignment is to think out and present to us an architecture, which can be composed of specific microservices, queue systems, API endpoints, databases, and gateways. In terms of code, a Proof of Concept is required.
