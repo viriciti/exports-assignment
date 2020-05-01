@@ -86,7 +86,7 @@ The main challenge is creating an export system that will not overflow the datab
 
 * (Bonus) Create a simple UI where the exports can be composed, and the export result can be downloaded.
 
-The most important task for this assignment is to think out and present to us an architecture, which can be composed of specific microservices, queue systems, API endpoints, databases, and gateways. In terms of code, a Proof of Concept is required.
+The most important task for this assignment is to think out and present to us an architecture, which can be composed of specific microservices, a queue system, and database. In terms of code, a Proof of Concept is required.
 
 ## Questions
 If you have any questions about the assignment, the project setup or you're simply stuck, feel free to contact us at <a href='mailto:s.surur@viriciti.com'>s.surur@viriciti.com</a> or <a href='mailto:s.rijk@viriciti.com'>s.rijk@viriciti.com</a>. Please do not hesitate for this! You are also more than welcome to come by at the office at any time. We're always ready to help. The idea is that something is created that you learn from and in the end can be proud of.
